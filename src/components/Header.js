@@ -7,7 +7,7 @@ const Header = () => {
 		<Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
 			<Navbar.Collapse id="responsive-navbar-nav">
 				<Nav className="mr-auto">
-					<Nav.Link as={Link} to="/booking" className="mr-5">
+					<Nav.Link as={Link} to="/" className="mr-5">
 						Booking
 					</Nav.Link>
 					<Nav.Link as={Link} to="/seating" className="mr-5">

@@ -8,7 +8,7 @@ export default (props) => (
 	<Switch>
 		<Route
 			exact
-			path="/booking"
+			path="/"
 			render={(routeProps) => <Booking {...routeProps} {...props} />}
 		/>
 		<Route
