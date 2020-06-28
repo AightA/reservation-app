@@ -33,7 +33,6 @@ class Seating extends React.Component {
 			data: data,
 		});
 		localStorage.setItem('diner', JSON.stringify(data));
-		console.log(this.state.data);
 	};
 
 	getData = () => {
