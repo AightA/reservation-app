@@ -9,10 +9,12 @@ export default (props) => (
 		<Route
 			exact
 			path="/"
+			// component={Booking}
 			render={(routeProps) => <Booking {...routeProps} {...props} />}
 		/>
 		<Route
 			path="/seating"
+			// component={Seating}
 			render={(routeProps) => <Seating {...routeProps} {...props} />}
 		/>
 		<Route path="*" component={NotFound} />
