@@ -3,23 +3,32 @@ import { Container } from 'react-bootstrap';
 import { Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { onClickAddBooking } from '../redux/actions';
+import { addBooking } from '../redux/actions';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 const Booking = (props) => {
-	const [eachInput, setEachInput] = useState({});
-	const {
-		firstName,
-		lastName,
-		email,
-		phoneNumber,
-		numberOfPeople,
-		diningDate,
-	} = eachInput;
+	const formik = useFormik({
+		initialValues: {
+			firstName: '',
+			lastName: '',
+			email: '',
+			diningDate: 0,
+			numberOfPeople: 0,
+			phoneNumber: 0,
+		},
 
-	const handleChange = (e) => {
-		const { name, value } = e.target;
-		setEachInput({ ...eachInput, [name]: value });
-	};
+		validationSchema: Yup.object({
+			firstName: Yup.string().required('Required'),
+			lastName: Yup.string().required('Required'),
+			email: Yup.string().email('Invalid email address').required('Required'),
+		}),
+		onSubmit: (booking) => {
+			// redux to add this
+			props.addBooking(booking);
+			formik.resetForm();
+		},
+	});
 
 	return (
 		<Container>
@@ -30,73 +39,63 @@ const Booking = (props) => {
 			</Row>
 			<Row className="mt-4">
 				<Col sm="12" md={{ size: 6, offset: 3 }}>
-					<Form onSubmit={() => props.handleSubmit(eachInput)}>
+					<Form onSubmit={formik.handleSubmit}>
 						<FormGroup as={Col} md="4" controlId="validationCustom01">
 							<Label>First Name</Label>
-							<Input
-								required
-								name="firstName"
-								type="text"
-								placeholder="First Name"
-								value={firstName}
-								onChange={handleChange}
-							/>
+							<Input name="firstName" {...formik.getFieldProps('firstName')} />
+							{formik.touched.firstName && formik.errors.firstName ? (
+								<div>{formik.errors.firstName}</div>
+							) : null}
 						</FormGroup>
 
 						<FormGroup as={Col} md="4" controlId="validationCustom02">
 							<Label>Last Name</Label>
-							<Input
-								required
-								name="lastName"
-								type="text"
-								placeholder="Last Name"
-								value={lastName}
-								onChange={handleChange}
-							/>
+							<Input name="lastName" {...formik.getFieldProps('lastName')} />
+							{formik.touched.lastName && formik.errors.lastName ? (
+								<div>{formik.errors.lastName}</div>
+							) : null}
 						</FormGroup>
 
-						<FormGroup as={Col} md="4" controlId="dob">
+						<FormGroup as={Col} md="4">
 							<Label>Date of reservation</Label>
 							<Input
 								name="diningDate"
 								type="date"
-								placeholder="Date of reservation"
-								value={diningDate}
-								onChange={handleChange}
+								{...formik.getFieldProps('diningDate')}
 							/>
+							{formik.touched.diningDate && formik.errors.diningDate ? (
+								<div>{formik.errors.diningDate}</div>
+							) : null}
 						</FormGroup>
 
 						<FormGroup as={Col} controlId="formContainerEmail">
 							<Label>Email address</Label>
-							<Input
-								name="email"
-								type="email"
-								placeholder="Enter email"
-								value={email}
-								onChange={handleChange}
-							/>
+							<Input name="email" {...formik.getFieldProps('email')} />
+							{formik.touched.email && formik.errors.email ? (
+								<div>{formik.errors.email}</div>
+							) : null}
 						</FormGroup>
 
-						<FormGroup as={Col} controlId="formContainerEmail">
+						<FormGroup as={Col}>
 							<Label>Number of people</Label>
 							<Input
 								name="numberOfPeople"
-								type="number"
-								placeholder="number of people"
-								value={numberOfPeople}
-								onChange={handleChange}
+								{...formik.getFieldProps('numberOfPeople')}
 							/>
+							{formik.touched.numberOfPeople && formik.errors.numberOfPeople ? (
+								<div>{formik.errors.numberOfPeople}</div>
+							) : null}
 						</FormGroup>
 
-						<FormGroup as={Col} controlId="formContainerEmail">
+						<FormGroup as={Col}>
 							<Label>Phone Number</Label>
 							<Input
 								name="phoneNumber"
-								type="tel"
-								placeholder="Phone Number"
-								value={phoneNumber}
-								onChange={handleChange}
+								{...formik.getFieldProps('phoneNumber')}
 							/>
+							{formik.touched.phoneNumber && formik.errors.phoneNumber ? (
+								<div>{formik.errors.phoneNumber}</div>
+							) : null}
 						</FormGroup>
 
 						<Button variant="primary" type="submit" className="mb-5">
@@ -120,16 +119,10 @@ Booking.propTypes = {
 	}),
 };
 
-const mapStateToProps = (state) => {
-	return {
-		bookingToDisplay: state.bookings.payload.firstName,
-	};
-};
-
 const mapDispatchToProps = (dispatch) => {
 	return {
-		handleSubmit: (eachInput) => dispatch(onClickAddBooking(eachInput)),
+		addBooking: (booking) => dispatch(addBooking(booking)),
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Booking);
+export default connect(null, mapDispatchToProps)(Booking);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Booking from '../components/Booking';
-import Seating from '../components/Seating';
+import SeatingList from '../components/SeatingList';
 import NotFound from './NotFound';
 
 export default (props) => (
@@ -15,7 +15,7 @@ export default (props) => (
 		<Route
 			path="/seating"
 			// component={Seating}
-			render={(routeProps) => <Seating {...routeProps} {...props} />}
+			render={(routeProps) => <SeatingList {...routeProps} {...props} />}
 		/>
 		<Route path="*" component={NotFound} />
 	</Switch>
