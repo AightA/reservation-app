@@ -1,7 +1,11 @@
 import { combineReducers } from 'redux';
 import { ADD_BOOKING } from './actions';
 
-const INITIAL_BOOKINGS = [];
+const INITIAL_BOOKINGS = [
+	{
+		firstName: '',
+	},
+];
 
 function addBookingReducer(state = INITIAL_BOOKINGS, action) {
 	switch (action.type) {
